@@ -263,6 +263,172 @@
             line-height: 1.4;
         }
 
+        /* НОВАЯ СЕКЦИЯ - ГАЛЕРЕЯ */
+        .gallery-section {
+            width: 100%;
+            background-color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .gallery-section h2 {
+            margin-bottom: 40px;
+        }
+
+        .gallery-description {
+            max-width: 800px;
+            margin: 0 auto 40px;
+            font-size: 1.2em;
+            color: #666;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            will-change: transform;
+            transform-origin: center;
+        }
+
+        /* Эффект приближения при наведении */
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+
+        /* Плавное появление тени при наведении */
+        .gallery-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 10px;
+            box-shadow: 0 20px 40px rgba(154, 128, 155, 0.3);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: -1;
+        }
+
+        .gallery-item:hover::before {
+            opacity: 1;
+        }
+
+        .gallery-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform-origin: center;
+        }
+
+        /* Дополнительное небольшое увеличение изображения внутри */
+        .gallery-item:hover .gallery-img {
+            transform: scale(1.08);
+        }
+
+        /* Эффект виньетки при наведении */
+        .gallery-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, transparent 30%, rgba(0, 0, 0, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+
+        .gallery-item:hover::after {
+            opacity: 1;
+        }
+
+        /* Модальное окно для увеличения фото */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.show {
+            opacity: 1;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal.show .modal-content {
+            transform: scale(1);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s, transform 0.3s;
+            z-index: 1002;
+        }
+
+        .close-modal:hover {
+            color: #9a809b;
+            transform: scale(1.1);
+        }
+
+        .modal-caption {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-size: 1.2em;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.3s ease 0.1s;
+        }
+
+        .modal.show .modal-caption {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
         .feedback-section {
             width: 100%;
             background-color: white;
@@ -323,17 +489,19 @@
             font-size: 1.1em;
             font-weight: bold;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.3s;
             width: 100%;
         }
 
         .submit-btn:hover {
             background-color: #8a708b;
+            transform: scale(1.02);
         }
 
         .submit-btn:disabled {
             background-color: #cccccc;
             cursor: not-allowed;
+            transform: none;
         }
 
         .form-message {
@@ -379,7 +547,8 @@
         /* Адаптивность */
         @media (max-width: 1200px) {
             .achievements,
-            .technologies-grid {
+            .technologies-grid,
+            .gallery-grid {
                 grid-template-columns: repeat(3, 1fr);
                 gap: 25px;
                 max-width: 900px;
@@ -410,10 +579,15 @@
                 grid-column: 1 / -1;
             }
 
-            .technologies-grid {
+            .technologies-grid,
+            .gallery-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 25px;
                 max-width: 700px;
+            }
+
+            .gallery-item {
+                height: 220px;
             }
 
             .feedback-form {
@@ -448,6 +622,7 @@
 
             .achievements-section,
             .technologies-section,
+            .gallery-section,
             .feedback-section {
                 padding: 40px 15px;
             }
@@ -467,11 +642,16 @@
                 max-width: none;
             }
 
-            .technologies-grid {
+            .technologies-grid,
+            .gallery-grid {
                 grid-template-columns: 1fr;
                 gap: 20px;
                 padding: 0;
                 max-width: 500px;
+            }
+
+            .gallery-item {
+                height: 200px;
             }
 
             .achievement-card,
@@ -511,8 +691,13 @@
 
         @media (max-width: 576px) {
             .achievements,
-            .technologies-grid {
+            .technologies-grid,
+            .gallery-grid {
                 max-width: 100%;
+            }
+
+            .gallery-item {
+                height: 180px;
             }
 
             .feedback-form {
@@ -544,8 +729,13 @@
 
             .achievements-section,
             .technologies-section,
+            .gallery-section,
             .feedback-section {
                 padding: 30px 10px;
+            }
+
+            .gallery-item {
+                height: 150px;
             }
 
             .achievement-card,
@@ -582,6 +772,10 @@
                 height: 240px;
                 max-width: 180px;
             }
+
+            .gallery-item {
+                height: 120px;
+            }
         }
     </style>
 </head>
@@ -593,6 +787,7 @@
                 <li class="nav-item"><a class="nav-link" href="#about">Обо мне</a></li>
                 <li class="nav-item"><a class="nav-link" href="#achievements">Достижения</a></li>
                 <li class="nav-item"><a class="nav-link" href="#technologies">Технологии</a></li>
+                <li class="nav-item"><a class="nav-link" href="#gallery">Галерея</a></li>
                 <li class="nav-item"><a class="nav-link" href="#feedback">Отзывы</a></li>
                 <li class="nav-item"><a class="nav-link" href="#contact">Контакты</a></li>
             </ul>
@@ -674,6 +869,46 @@
         </div>
     </div>
 
+    <!-- НОВАЯ СЕКЦИЯ ГАЛЕРЕИ -->
+    <div class="gallery-section" id="gallery">
+        <h2>Мои пушистые клиенты</h2>
+        <p class="gallery-description">Здесь вы можете увидеть моих замечательных клиентов, с которыми мне посчастливилось работать!</p>
+
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="cat1.jpg" alt="Кошка Барсик" class="gallery-img" data-caption="Барсик - научился пользоваться когтеточкой">
+            </div>
+            <div class="gallery-item">
+                <img src="cat2.jpg" alt="Кот Марсик" class="gallery-img" data-caption="Марсик - поборол страх перед гостями">
+            </div>
+            <div class="gallery-item">
+                <img src="cat3.jpg" alt="Кошка Мурка" class="gallery-img" data-caption="Мурка - научилась играть без агрессии">
+            </div>
+            <div class="gallery-item">
+                <img src="cat4.jpg" alt="Кот Гарфилд" class="gallery-img" data-caption="Гарфилд - перестал метить территорию">
+            </div>
+            <div class="gallery-item">
+                <img src="cat5.jpg" alt="Кошка Соня" class="gallery-img" data-caption="Соня - адаптировалась к новому дому">
+            </div>
+            <div class="gallery-item">
+                <img src="cat6.jpg" alt="Кот Персик" class="gallery-img" data-caption="Персик - научился общаться с другими котами">
+            </div>
+            <div class="gallery-item">
+                <img src="cat7.jpg" alt="Кошка Лилу" class="gallery-img" data-caption="Лилу - перестала будить хозяев по ночам">
+            </div>
+            <div class="gallery-item">
+                <img src="cat8.jpg" alt="Кот Симба" class="gallery-img" data-caption="Симба - стал более общительным и ласковым">
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для увеличения фото -->
+    <div class="modal" id="imageModal">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="modalImage">
+        <div class="modal-caption" id="modalCaption"></div>
+    </div>
+
     <div class="feedback-section" id="feedback">
         <h2>Оставьте отзыв</h2>
         <p>Поделитесь вашим мнением о сайте специалиста</p>
@@ -723,6 +958,10 @@
         const feedbackForm = document.getElementById('feedbackForm');
         const submitBtn = document.getElementById('submitBtn');
         const formMessage = document.getElementById('formMessage');
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const modalCaption = document.getElementById('modalCaption');
+        const closeModal = document.querySelector('.close-modal');
 
         // Бургер-меню
         burger.addEventListener('click', () => {
@@ -767,6 +1006,44 @@
             });
         });
 
+        // Обработка галереи
+        document.querySelectorAll('.gallery-img').forEach(img => {
+            img.addEventListener('click', function() {
+                modal.style.display = 'flex';
+                modalImg.src = this.src;
+                modalCaption.innerHTML = this.getAttribute('data-caption');
+
+                // Плавное появление модального окна
+                setTimeout(() => {
+                    modal.classList.add('show');
+                }, 10);
+            });
+        });
+
+        // Закрытие модального окна
+        function closeImageModal() {
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+
+        closeModal.addEventListener('click', closeImageModal);
+
+        // Закрытие модального окна при клике вне изображения
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeImageModal();
+            }
+        });
+
+        // Закрытие модального окна клавишей ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'flex') {
+                closeImageModal();
+            }
+        });
+
         // Обработка формы
         feedbackForm.addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -808,6 +1085,18 @@
                     formMessage.style.display = 'none';
                 }, 5000);
             }
+        });
+
+        // Оптимизация анимации галереи
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        galleryItems.forEach(item => {
+            // Предзагрузка для плавной анимации
+            item.style.willChange = 'transform';
+
+            // Убираем will-change после анимации
+            item.addEventListener('transitionend', () => {
+                item.style.willChange = 'auto';
+            });
         });
     </script>
 </body>
